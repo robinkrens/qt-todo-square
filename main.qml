@@ -6,9 +6,11 @@ import QtQuick.Dialogs 1.2
 Item {
 	id: root
 	width: 400; height: 300
-	
+
+
 	Rectangle {
 		id: page
+		property int currentItem: -1;
 		width: 400; height: 300
 		color: "lightgray"
 
@@ -19,6 +21,11 @@ Item {
 				xpos: 100; ypos: 100;
 				bgcolor: "red";
 	        	}
+		}
+
+		ListView {
+			id: view;
+			model: todoList;
 		}
 
 		Repeater {
@@ -59,7 +66,7 @@ Item {
 		Rectangle { 
 			id: wrapper
 			width: 12; height: 12;
-			color: bgcolor;
+			color: index == page.currentItem ? "red" : "black";
 			radius: 8;
 			antialiasing: true;
 			x: xpos; y: ypos;
@@ -69,6 +76,7 @@ Item {
 				onClicked: {
 					console.log(todoList.get(index).name);
 					showCurrent.text = todoList.get(index).name;
+					page.currentItem = index;
 				//	todoList.setProperty(index, "bgcolor", "blue");
 				}
 			}
