@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.2
 Item {
 	id: root
 	width: 400; height: 300
-
+	
 	Rectangle {
 		id: page
 		width: 400; height: 300
@@ -15,14 +15,15 @@ Item {
 		ListModel {
 	    		id: myModel;
 		        ListElement {
-		        	cellColor: "lolz";
+				cellColor: "lolz";
+				xpos: 100; ypos: 0;
 	        	}
 		}
 
-		ListView {
+		Repeater {
 			width: 400; height: parent.height;
 			model: myModel
-			delegate: Text { text: cellColor } 
+			delegate: Rectangle { width: 10; height: 10; color: "red"; x: xpos; y: ypos; } 
 			//delegate: Cell { cellColor: "red"; }
 			//delegate: Item { id: name; Rectangle { x: posx; y: posy; width: 10; height: 10; color: bgcolor; 
 			//	MouseArea { xnchors.fill: parent; onClicked: { parent.color = 'red' }} } }
@@ -33,7 +34,7 @@ Item {
 			acceptedButtons: Qt.RightButton;
 			onClicked: {
 			    	console.log("x:" + mouseX, " y:" + mouseY);
-				myModel.append({"cellColor" : "lolzz" });
+				myModel.append({"cellColor" : "lolzz", "xpos": mouseX, "ypos": mouseY });
 				todoText.visibility = true;
 			}
 		}
