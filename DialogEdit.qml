@@ -16,13 +16,13 @@ Item {
 		title: "Enter todo:"
 		contentItem: Rectangle {
 		        implicitWidth: 250
-		        implicitHeight: 50
+		        implicitHeight: 35
 			Grid {
 				columns: 2;
 				anchors.fill: parent
 				TextField {
 					id: todoDescr;
-					width: 150;
+					width: 220;
 					//color: "navy"
 	    			}
 				Button {

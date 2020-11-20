@@ -57,6 +57,7 @@ Item {
 	Component {
 		id: todoDelegate
 		Rectangle { 
+			id: wrapper
 			width: 12; height: 12;
 			color: bgcolor;
 			radius: 8;
