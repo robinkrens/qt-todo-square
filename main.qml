@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.2
 Item {
 	id: root
 	width: 400; height: 300
-
+	focus: true;
 
 	Rectangle {
 		id: page
@@ -19,7 +19,7 @@ Item {
 		        ListElement {
 				name: "example todo";
 				xpos: 100; ypos: 100;
-				bgcolor: "red";
+				bgcolor: "black";
 	        	}
 		}
 
@@ -36,7 +36,7 @@ Item {
 
 		MouseArea {
 			anchors.fill: parent;
-			acceptedButtons: Qt.RightButton /*  | Qt.LeftButton */;
+			acceptedButtons: Qt.RightButton /* | Qt.LeftButton */;
 			onClicked: {
 				if (mouse.button == Qt.RightButton) {
 				    	console.log("x:" + mouseX, " y:" + mouseY);
@@ -64,9 +64,10 @@ Item {
 	Component {
 		id: todoDelegate
 		Rectangle { 
+			property bool holding: false;
 			id: wrapper
 			width: 12; height: 12;
-			color: index == page.currentItem ? "red" : "black";
+			color: index == page.currentItem ? "red" : bgcolor;
 			radius: 8;
 			antialiasing: true;
 			x: xpos; y: ypos;
@@ -77,8 +78,24 @@ Item {
 					console.log(todoList.get(index).name);
 					showCurrent.text = todoList.get(index).name;
 					page.currentItem = index;
+					if (mouse.modifiers & Qt.ShiftModifier) {
+						console.log("shift!");
+					}
 				//	todoList.setProperty(index, "bgcolor", "blue");
 				}
+				//onPressAndHold: {
+				//	console.log("on press and hold event");
+				//	holding = true;
+				//}
+				onReleased: {
+					//console.log("xpos: " + todoList.get(index).xpos + mouseX);
+					console.log("mouseX: " + wrapper.x);
+					todoList.get(index).xpos = wrapper.x;
+					todoList.get(index).ypos = wrapper.y;
+				}
+				drag.target: wrapper;
+		            	drag.axis: Drag.XAndYAxis;
+
 			}
 		//	Tooltip { 
 		//		visible: down;
@@ -93,7 +110,7 @@ Item {
 			console.log("Recv: " + todo);
 			todoList.append({"name" : todo, 
 			"xpos" : todoText.clickedX, "ypos" : todoText.clickedY, 
-			"bgcolor" : "red" });
+			"bgcolor" : "black" });
 		}
 	}
 
