@@ -34,35 +34,13 @@ Item {
 			onClicked: {
 			    	console.log("x:" + mouseX, " y:" + mouseY);
 				myModel.append({"cellColor" : "lolzz" });
-				todoText.visible = true;
+				todoText.visibility = true;
 			}
 		}
 
 	}
-
-	Dialog {
-		id: todoText
-		visible: false;
-		title: "enter todo"
-		contentItem: Rectangle {
-		        implicitWidth: 250
-		        implicitHeight: 50
-			Grid {
-				columns: 2;
-				anchors.fill: parent
-				TextField {
-					width: 150;
-					//color: "navy"
-	    			}
-				Button {
-					text: "OK!";
-					width: 30;
-					onClicked: { todoText.visible =  false } 
-
-				}
-			}
-
-    		}
+	DialogEdit {
+		id: todoText;
 	}
 
 } // end Item 
