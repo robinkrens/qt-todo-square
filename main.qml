@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQml.Models 2.1
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 
 Item {
@@ -13,35 +13,81 @@ Item {
 		color: "lightgray"
 
 		ListModel {
-	    		id: myModel;
+			id: todoList;
 		        ListElement {
-				cellColor: "lolz";
-				xpos: 100; ypos: 0;
+				name: "example todo";
+				xpos: 100; ypos: 100;
+				bgcolor: "red";
 	        	}
 		}
 
 		Repeater {
 			width: 400; height: parent.height;
-			model: myModel
-			delegate: Rectangle { width: 10; height: 10; color: "red"; x: xpos; y: ypos; } 
-			//delegate: Cell { cellColor: "red"; }
-			//delegate: Item { id: name; Rectangle { x: posx; y: posy; width: 10; height: 10; color: bgcolor; 
-			//	MouseArea { xnchors.fill: parent; onClicked: { parent.color = 'red' }} } }
+			model: todoList;
+			delegate: todoDelegate;
 		}	
 
 		MouseArea {
 			anchors.fill: parent;
-			acceptedButtons: Qt.RightButton;
+			acceptedButtons: Qt.RightButton /*  | Qt.LeftButton */;
 			onClicked: {
-			    	console.log("x:" + mouseX, " y:" + mouseY);
-				myModel.append({"cellColor" : "lolzz", "xpos": mouseX, "ypos": mouseY });
-				todoText.visibility = true;
+				if (mouse.button == Qt.RightButton) {
+				    	console.log("x:" + mouseX, " y:" + mouseY);
+					todoText.visibility = true;
+					todoText.clickedX = mouseX;
+					todoText.clickedY = mouseY;
+					todoText.emptyText = "";
+				}
+				//else if (mouse.button == Qt.LeftButton) {
+				//	console.log("view");
+				//}
 			}
 		}
+		Text {
+			id: showCurrent;
+			anchors.fill: parent;
+			text: "left-click: view | right-click: add | shift-click: delete";
+			verticalAlignment: Text.AlignBottom;
+		}
+		//Button {
+		//}
 
 	}
+
+	Component {
+		id: todoDelegate
+		Rectangle { 
+			width: 12; height: 12;
+			color: bgcolor;
+			radius: 8;
+			antialiasing: true;
+			x: xpos; y: ypos;
+			MouseArea {
+				anchors.fill: parent;
+				//onClicked: console.log(todoList.setProperty(index, "xpos", 50));
+				onClicked: {
+					console.log(todoList.get(index).name);
+					showCurrent.text = todoList.get(index).name;
+				//	todoList.setProperty(index, "bgcolor", "blue");
+				}
+			}
+		//	Tooltip { 
+		//		visible: down;
+		//		text: "blaat";
+		//	}
+		}
+	}
+
 	DialogEdit {
 		id: todoText;
+		onAdded: function(todo) {
+			console.log("Recv: " + todo);
+			todoList.append({"name" : todo, 
+			"xpos" : todoText.clickedX, "ypos" : todoText.clickedY, 
+			"bgcolor" : "red" });
+		}
 	}
 
-} // end Item 
+	function doSomething() 
+	{ console.log("lolz"); }
+} 
