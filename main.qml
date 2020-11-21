@@ -24,9 +24,10 @@ Item {
 		anchors.fill: parent;
 		
 		property int currentItem: -1;
-		property string introText: "left-click: view | right-click: add | shift-click: delete";
+		//property string introText: "left-click: view | right-click: add | shift-click: delete";
 		property alias introText: showCurrent.text;
-		color: "lightgray"
+		//color: "lightgray"
+		color: "#00000000"
 
 		Rectangle {
 			width: 30;
@@ -73,7 +74,7 @@ Item {
 		Text {
 			id: showCurrent;
 			anchors.fill: parent;
-			text: "left-click: view | right-click: add | shift-click: delete";
+			text: "left-click: view | right-click: add | left-click drag: move";
 			verticalAlignment: Text.AlignBottom;
 		}
 
@@ -101,7 +102,7 @@ Item {
 				id: mouseAreaItem
 				anchors.fill: parent;
 				onPressed: {
-					console.log(todoList.get(index).name);
+					//console.log(todoList.get(index).name);
 					showCurrent.text = todoList.get(index).name;
 					page.currentItem = index;
 					//if (mouse.modifiers & Qt.ShiftModifier) {
@@ -113,7 +114,7 @@ Item {
 					page.currentItem = index;
 				}
 				onReleased: {
-					console.log("mouseX: " + wrapper.x);
+					//console.log("mouseX: " + wrapper.x);
 					if (wrapper.x > (customWidth - 35) && wrapper.y < 30) {
 						Todo.deleteItem(todoList, page);
 					} else {
