@@ -2,12 +2,11 @@ import QtQuick 2.0
 import QtQml.Models 2.1
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
+import "./todo.js" as Todo
 
 Item {
 	property int customHeight: 250;
 	property int customWidth: 400;
-	property string introText: "left-click: view | right-click: add | shift-click: delete";
-	property int currentItem: -1;
 
 	id: root
 	width: customWidth; height: customHeight;
@@ -15,20 +14,18 @@ Item {
 
 	Keys.onPressed: {
 		if (event.key == Qt.Key_Delete) {
-			if (root.currentItem >= 0) {
-				console.log(todoList.get(root.currentItem).name);
-				todoList.remove(root.currentItem, 1);
-				root.currentItem = -1;
-				showCurrent.text = root.introText;
-			}	
+			Todo.deleteItem(todoList, page);
 		}
 	}
 
 	Rectangle {
+		
 		id: page
-		//property int currentItem: -1;
 		anchors.fill: parent;
-		//width: 400; height: 300
+		
+		property int currentItem: -1;
+		property string introText: "left-click: view | right-click: add | shift-click: delete";
+		property alias introText: showCurrent.text;
 		color: "lightgray"
 
 		Rectangle {
@@ -52,13 +49,7 @@ Item {
 	        	}
 		}
 
-		ListView {
-			id: view;
-			model: todoList;
-		}
-
 		Repeater {
-			//width: 400; height: parent.height;
 			model: todoList;
 			delegate: todoDelegate;
 		}	
@@ -85,8 +76,6 @@ Item {
 			text: "left-click: view | right-click: add | shift-click: delete";
 			verticalAlignment: Text.AlignBottom;
 		}
-		//Button {
-		//}
 
 	}
 
@@ -96,53 +85,46 @@ Item {
 			property bool holding: false;
 			id: wrapper
 			width: 12; height: 12;
-			color: index == root.currentItem ? "red" : bgcolor;
+			color: index == page.currentItem ? "red" : "black";
 			radius: 8;
 			antialiasing: true;
 			x: xpos; y: ypos;
-			//onDragStarted: {
-			//	console.log("on press and hold event");
-			//	showCurrent.text = todoList.get(index).name;
-			//	page.currentItem = index;
-			//}
+			
+			states: State {
+				when: mouseAreaItem.drag.active
+				PropertyChanges {
+					target: wrapper; radius: 100;
+				}
+			}
+			
 			MouseArea {
+				id: mouseAreaItem
 				anchors.fill: parent;
-				//onClicked: console.log(todoList.setProperty(index, "xpos", 50));
-				onClicked: {
+				onPressed: {
 					console.log(todoList.get(index).name);
 					showCurrent.text = todoList.get(index).name;
-					root.currentItem = index;
-					if (mouse.modifiers & Qt.ShiftModifier) {
-						console.log("shift!");
-					}
-				//	todoList.setProperty(index, "bgcolor", "blue");
+					page.currentItem = index;
+					//if (mouse.modifiers & Qt.ShiftModifier) {
+					//	console.log("shift!");
+					//}
 				}
 				onPressAndHold: {
-					console.log("on press and hold event");
 					showCurrent.text = todoList.get(index).name;
-					root.currentItem = index;
+					page.currentItem = index;
 				}
 				onReleased: {
-					//console.log("xpos: " + todoList.get(index).xpos + mouseX);
 					console.log("mouseX: " + wrapper.x);
 					if (wrapper.x > (customWidth - 35) && wrapper.y < 30) {
-						console.log("deleting...");
-						todoList.remove(root.currentItem, 1);
-						root.currentItem = -1;
-						showCurrent.text = root.introText;
-							
+						Todo.deleteItem(todoList, page);
+					} else {
+						todoList.get(index).xpos = wrapper.x;
+						todoList.get(index).ypos = wrapper.y;
 					}
-					todoList.get(index).xpos = wrapper.x;
-					todoList.get(index).ypos = wrapper.y;
 				}
 				drag.target: wrapper;
 				drag.axis: Drag.XAndYAxis;
 
 			}
-		//	Tooltip { 
-		//		visible: down;
-		//		text: "blaat";
-		//	}
 		}
 	}
 
@@ -156,6 +138,4 @@ Item {
 		}
 	}
 
-	function doSomething() 
-	{ console.log("lolz"); }
 } 
