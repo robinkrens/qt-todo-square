@@ -9,7 +9,7 @@ Item {
 	property int clickedX: 0;
 	property int clickedY: 0;
 	property alias emptyText: todoDescr.text;
-	signal added(string todo);
+	signal added(int xpos, int ypos, string todo);
 	Dialog {
 		id: todoText
 		visible: visibility;
@@ -30,7 +30,7 @@ Item {
 					width: 30;
 					onClicked: { visibility =  false;
 					if (todoDescr.text != "")
-						container.added(todoDescr.text); }
+						container.added(clickedX, clickedY, todoDescr.text); }
 				}
 			}
 		}

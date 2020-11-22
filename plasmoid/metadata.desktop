@@ -1,19 +1,21 @@
 [Desktop Entry]
-Encoding=UTF-8
-Name=Qt-todo-square
-Comment=Qt todo square
+Name=Todo Square
+Keywords=Todo;square;notes;
+Comment=Keep track of your todo's in this handy square!
 Type=Service
-
-X-KDE-Library=plasma_applet_todo_square
-X-KDE-ParentApp=
-X-KDE-PluginInfo-Author=Robin
-X-KDE-PluginInfo-Email=robin@robinkrens.nl
-X-KDE-PluginInfo-License=GPL
-X-KDE-PluginInfo-Name=org.kde.todo_square
-X-KDE-PluginInfo-Version=2.0
-X-KDE-PluginInfo-Website=plasma.kde.org
+Icon=view-list-icons
 X-KDE-ServiceTypes=Plasma/Applet
-X-Plasma-API=declarativeappletscript
-X-Plasma-MainScript=ui/main.qml
-X-KDE-PluginInfo-Category=Windows and Tasks
 
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/todosquare.qml
+
+X-KDE-PluginInfo-Author=Robin Krens
+X-KDE-PluginInfo-Email=robin@robinkrens.nl
+X-KDE-PluginInfo-Name=org.kde.plasma.todosquare
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=http://plasma.kde.org/
+X-KDE-PluginInfo-Category=Utilities
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-FormFactors=desktop
