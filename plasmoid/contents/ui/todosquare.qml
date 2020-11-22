@@ -34,17 +34,24 @@ Item {
 	
 	Plasmoid.preferredRepresentation: plasmoid.fullRepresentation;
 
-	height: units.gridUnit * 12;
+	height: units.gridUnit * 14;
 	width: units.gridUnit * 15;
 
 	Component.onCompleted: {
 		Db.dbInit();
 	}
+	
+
+	Grid {
+		rows: 3;
+		columns: 1;
+		rowSpacing: 5;
 
 	Rectangle {
 		
 		id: page
-		anchors.fill: parent;
+		height: units.gridUnit * 12;
+		width: units.gridUnit * 15;
 		
 		property int currentItem: -1;
 		property alias introText: showCurrent.text;
@@ -53,13 +60,14 @@ Item {
 		Rectangle {
 			width: 30;
 			height: 30;
+			color: "transparent";
 			anchors.left: page.right;
-			anchors.leftMargin: -30;
+			anchors.leftMargin: -40;
 
-			//Image {
-			  //     anchors.fill: parent
-			    //   source: "trash.png"
-		       //}
+			Image {
+				anchors.fill: parent
+				source: "../images/trash.png"
+		      	}
 	        }
 
 		ListModel {
@@ -86,23 +94,73 @@ Item {
 			onClicked: {
 				if (mouse.button == Qt.RightButton) {
 				    	//console.log("x:" + mouseX, " y:" + mouseY);
-					todoText.visibility = true;
-					todoText.clickedX = mouseX;
-					todoText.clickedY = mouseY;
-					todoText.emptyText = "";
+					//todoText.visibility = true;
+					//todoText.clickedX = mouseX;
+					//todoText.clickedY = mouseY;
+					//todoText.emptyText = "";
+					enter.x = mouseX;
+					enter.y = mouseY;
+					enter.visible = true;
 				}
 				//else if (mouse.button == Qt.LeftButton) {
 				//	console.log("view");
 				//}
 			}
 		}
+
+	}
+
+	Rectangle {
+
+		color: "white";
+		height: units.gridUnit * 0.1;
+		width: units.gridUnit * 15;
+	}
+	
+	Rectangle {
+		height: units.gridUnit * 2;
+		width: units.gridUnit * 15;
+		color: "#00000000";
+		
 		Text {
 			id: showCurrent;
-			anchors.fill: parent;
-			text: "left-click: view | right-click: add | drag: move";
+			//anchors.fill: parent;
+			color: "white";
+			text: "left-click: view | right-click: add";
 			verticalAlignment: Text.AlignBottom;
 		}
+	}
 
+	}
+
+	Rectangle {
+		id: enter;
+		x: 0;
+		y: 0;
+		width: 150;
+		height: 35;
+		radius: 5;
+		visible: false;
+		color: "white";
+
+		Keys.onPressed: {
+			if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+				Db.insertTodo(enter.x, enter.y, enterText.text);
+				page.currentItem = todoList.count;
+				showCurrent.text = enterText.text;
+				todoList.update();
+				enter.visible = false;
+				enterText.text = "";
+			} else if (event.key == Qt.Key_Escape) {
+				enter.visible = false;
+			}
+		}
+
+		TextField {
+			focus: true;
+			id: enterText;
+			anchors.fill: parent;
+		}
 	}
 
 	Component {
@@ -110,8 +168,8 @@ Item {
 		Rectangle { 
 			id: wrapper
 			width: 12; height: 12;
-			color: index == page.currentItem ? "red" : "black";
-			radius: 8;
+			color: { index == page.currentItem ? "red" : "black"; }
+			radius: 5;
 			x: xpos; y: ypos;
 			
 			MouseArea {
@@ -129,12 +187,14 @@ Item {
 					//console.log("mouseX: " + wrapper.x);
 					if (wrapper.x > (customWidth - 35) && wrapper.y < 30) {
 						page.currentItem = -1;
-						showCurrent.text = "left-click: view | right-click: add | drag: move";
+						showCurrent.text = "left-click: view | right-click: add";
 						Db.deleteTodo(id);
 						todoList.update();
 					} else {
 						wrapper.x = Math.max(0, wrapper.x);
-						wrapper.x = Math.min(400, wrapper.x);
+						wrapper.x = Math.min(root.width - 10, wrapper.x);
+						wrapper.y = Math.max(0, wrapper.y);
+						wrapper.y = Math.min(root.height - 50, wrapper.y);
 						Db.updateTodoPosition(id, wrapper.x, wrapper.y);
 					}
 				}
