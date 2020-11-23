@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import QtQml 2.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0
@@ -168,9 +169,12 @@ Item {
 		Rectangle { 
 			id: wrapper
 			width: 12; height: 12;
-			color: { index == page.currentItem ? "red" : "black"; }
+
 			radius: 5;
 			x: xpos; y: ypos;
+			
+			//color: { index == page.currentItem ? "red" : Qt.rgba((ypos / page.height), 0, 0, (xpos / root.width) + 0.2); }
+			color: { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3); }
 			
 			MouseArea {
 				id: mouseAreaItem
@@ -202,18 +206,28 @@ Item {
 				drag.axis: Drag.XAndYAxis;
 
 			}
+
+			Image {
+				x: 2;
+				y: -12;
+				visible: { index == page.currentItem ? true : false; }
+				//width: 10;
+				//height: 12;
+				source: "../images/arrow.png"
+			}
 		}
+
 	}
 	
-	DialogEdit {
-		id: todoText;
-		onAdded: function(xpos, ypos, todo) {
-			Db.insertTodo(xpos, ypos, todo);
-			page.currentItem = todoList.count;
-			showCurrent.text = todo;
-			todoList.update();
-		}
-	}
+//	DialogEdit {
+//		id: todoText;
+//		onAdded: function(xpos, ypos, todo) {
+//			Db.insertTodo(xpos, ypos, todo);
+//			page.currentItem = todoList.count;
+//			showCurrent.text = todo;
+//			todoList.update();
+//		}
+//	}
 
 
 }
