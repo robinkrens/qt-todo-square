@@ -34,6 +34,7 @@ Item {
 	
 	readonly property int customHeight: height;
 	readonly property int customWidth: width;
+	readonly property string itemColor: plasmoid.configuration.item_color;
 
 	/* No support for CompactRepresentation, as it is probably
 	 * not useful to run this widget in compact mode  */
@@ -182,8 +183,10 @@ Item {
 			radius: 5;
 			x: xpos; y: ypos;
 			
-			color: { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3); }
-			
+			//color: { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3); }
+			//color: { if (itemColor == "blue") { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3);} }
+			color: setColor();
+
 			MouseArea {
 				id: mouseAreaItem
 				anchors.fill: parent;
@@ -219,6 +222,16 @@ Item {
 				y: -12;
 				visible: { index == page.currentItem ? true : false; }
 				source: "../images/arrow.png"
+			}
+			function setColor() {
+				if (itemColor == "red") {
+					return Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3); 
+				} else if (itemColor == "green") {
+					return Qt.rgba(0, (y / page.height), 0, (x / root.width) + 0.3); 
+			      	} else if (itemColor == "blue") {
+					return Qt.rgba(0, 0, (y / page.height), (x / root.width) + 0.3); 
+				}
+				return "red";
 			}
 		}
 

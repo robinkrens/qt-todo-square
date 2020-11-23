@@ -1,6 +1,5 @@
 /*
- *  Copyright 2013 Sebastian Kügler <sebas@kde.org>
- *  Copyright 2015 Kai Uwe Broulik <kde@privat.broulik.de>
+ *  Copyright 2020 Robin Krens <robin@robinkrens.nl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,69 +24,36 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
-    id: iconsPage
-    width: childrenRect.width
-    height: childrenRect.height
-    implicitWidth: pageColumn.implicitWidth
-    implicitHeight: pageColumn.implicitHeight
+    	id: iconsPage
+    	width: childrenRect.width
+    	height: childrenRect.height
+    	implicitWidth: pageColumn.implicitWidth
+    	implicitHeight: pageColumn.implicitHeight
+	property string cfg_item_color;
 
-    readonly property int checkedOptions: leave.checked + lock.checked + switchUser.checked + hibernate.checked + sleep.checked
+    	SystemPalette {
+        	id: sypal
+    	}
 
-    property alias cfg_show_requestShutDown: leave.checked
-    property alias cfg_show_lockScreen: lock.checked
-    property alias cfg_show_switchUser: switchUser.checked
-    property alias cfg_show_suspendToDisk: hibernate.checked
-    property alias cfg_show_suspendToRam: sleep.checked
+    	QtLayouts.ColumnLayout {
 
-    readonly property bool canLockScreen: dataEngine.data["Sleep States"].LockScreen
-    readonly property bool canSuspend: dataEngine.data["Sleep States"].Suspend
-    readonly property bool canHibernate: dataEngine.data["Sleep States"].Hibernate
+		id: pageColumn
 
-    SystemPalette {
-        id: sypal
-    }
+        	anchors.left: parent.left
+        	PlasmaExtras.Heading {
+            	text: i18nc("Heading for colors", "Item shade color")
+            	color: syspal.text
+            	level: 3
+   	}
 
-    PlasmaCore.DataSource {
-        id: dataEngine
-        engine: "powermanagement"
-        connectedSources: ["Sleep States"]
-    }
+	/* User can't specify an exact color, since i'm using
+	 * gradients and alpha for colors */
+	QtControls.ComboBox {
+		id: dot
+		model: ["red", "green", "blue"];
+            	currentIndex: dot.model.indexOf(cfg_item_color)
+            	onActivated: cfg_item_color = model[index]
+	}
 
-    QtLayouts.ColumnLayout {
-        id: pageColumn
-
-        anchors.left: parent.left
-        PlasmaExtras.Heading {
-            text: i18nc("Heading for list of actions (leave, lock, shutdown, ...)", "Actions")
-            color: syspal.text
-            level: 2
-        }
-
-        QtControls.CheckBox {
-            id: leave
-            text: i18n("Leave")
-            // ensure user cannot have all options unchecked
-            enabled: checkedOptions > 1 || !checked
-        }
-        QtControls.CheckBox {
-            id: lock
-            text: i18n("Lock")
-            enabled: iconsPage.canLockScreen && (checkedOptions > 1 || !checked)
-        }
-        QtControls.CheckBox {
-            id: switchUser
-            text: i18n("Switch User")
-            enabled: checkedOptions > 1 || !checked
-        }
-        QtControls.CheckBox {
-            id: hibernate
-            text: i18n("Hibernate")
-            enabled: iconsPage.canHibernate && (checkedOptions > 1 || !checked)
-        }
-        QtControls.CheckBox {
-            id: sleep
-            text: i18n("Suspend")
-            enabled: iconsPage.canSuspend && (checkedOptions > 1 || !checked)
-        }
     }
 }

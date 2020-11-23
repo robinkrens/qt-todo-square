@@ -48,6 +48,8 @@
 **
 ****************************************************************************/
 
+/* Local storage logic, minor changes */
+
 function dbInit()
 {
     var db = LocalStorage.openDatabaseSync("todosquare_storage", "", "Todo Items", 100000)

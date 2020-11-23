@@ -5,35 +5,11 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
 
-  <group name="General">
-
-	  <entry name="history" type="StringList">
-		  <default>10, 10, test</default>
-		  <!--<entry name="test" type="Bool">
-		  <default>true</default>
-		  </entry>-->
+  <group name="Appearance">
+	  <entry name="item_color" type="String">
+		  <label>Set item color shade</label>
+		  <default>red</default>
 	  </entry>
-      
-	  <entry name="show_requestShutDown" type="Bool">
-      <label>Show an option to shut down the system.</label>
-      <default>true</default>
-    </entry>
-    <entry name="show_lockScreen" type="Bool">
-      <label>Show an option to lock the system.</label>
-      <default>true</default>
-    </entry>
-    <entry name="show_switchUser" type="Bool">
-      <label>Show an option to switch user.</label>
-      <default>false</default>
-    </entry>
-    <entry name="show_suspendToDisk" type="Bool">
-      <label>Show an option to suspend the system to disk (hibernate).</label>
-      <default>false</default>
-    </entry>
-    <entry name="show_suspendToRam" type="Bool">
-      <label>Show an option to suspend the system suspend.</label>
-      <default>false</default>
-    </entry>
   </group>
 
 </kcfg>
