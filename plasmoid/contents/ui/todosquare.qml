@@ -25,6 +25,7 @@ import QtQuick.LocalStorage 2.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0
+
 import org.kde.kquickcontrolsaddons 2.0
 
 import "../code/database.js" as Db
@@ -47,14 +48,28 @@ Item {
 	Layout.minimumHeight: units.gridUnit * 10;
 	Layout.minimumWidth: units.gridUnit * 12;
 
+	/* Function to copy all todos to clipboard */
+	function action_copyToClip() {
+		var itemsOut = "";
+		for (var i = todoList.count-1, j = 1; i >= 0; i--,j++) {
+			itemsOut += j + ". " + todoList.get(i).todo + "\n";
+		}
+		clipboard.content = itemsOut;
+	}
+
+	Clipboard {
+		id: clipboard
+	}
+
 	Component.onCompleted: {
 		Db.dbInit();
+		plasmoid.setAction("copyToClip", i18n("Copy all items to clipboard"), "edit-copy")
 	}
 
 	Grid {
 		rows: 3;
 		columns: 1;
-		rowSpacing: 5;
+		rowSpacing: 0;
 
 		/* Square with todos */
 		Rectangle {
@@ -65,20 +80,24 @@ Item {
 			
 			property int currentItem: -1;
 			property alias introText: showCurrent.text;
-			color: "#00000000"
-	
+			//color: "#00000000"
+			color: theme.backgroundColor;
+
 			/* Trashbin */
 			Rectangle {
 				width: 30;
 				height: 30;
 				color: "transparent";
 				anchors.left: page.right;
-				anchors.leftMargin: -30;
+				anchors.leftMargin: -20;
 	
-				Image {
-					anchors.fill: parent
-					source: "../images/trash.png"
-			      	}
+			//	Image {
+			//		anchors.fill: parent;
+			//		source: "../images/trash.png";
+			//	}
+				PlasmaCore.IconItem {
+					source: "user-trash-full-symbolic";
+				}
 		        }
 	
 			ListModel {
@@ -118,24 +137,30 @@ Item {
 	
 		/* Seperator */
 		Rectangle {
-	
-			color: "white";
+			color: theme.textColor; /* should match text color*/
 			height: units.gridUnit * 0.1;
 			width:	root.width;
 		}
 
 		/* Info about selected item */
 		Rectangle {
-			height: 10;
+			height: 30;
 			width: root.width;
-			color: "#00000000";
-			
+			//color: "#00000000";
+			color: theme.backgroundColor;
+
 			Text {
 				id: showCurrent;
-				color: "white";
+				anchors.verticalCenter: parent.verticalCenter;
+				//color: "white";
+				color: theme.textColor;
 				text: "left-click: view | right-click: add";
 				verticalAlignment: Text.AlignBottom;
 			}
+			//ModelContextMenu {
+                    	//	id: copyMenu
+                    	//	onClicked: copyToClipboard(todoList.todo)
+                	//}
 		}
 
 	}
@@ -217,11 +242,19 @@ Item {
 			}
 
 			/* If item is selected, show an arrow */
-			Image {
-				x: 2;
-				y: -12;
+		//		Image {
+		//			x: 2;
+		//			y: -12;
+		//			visible: { index == page.currentItem ? true : false; }
+		//			source: "../images/arrow.png"
+		//		}
+
+			PlasmaCore.IconItem {
+				x: -5;
+				y: { wrapper.y < 20 ? 10 : -20; }
+				rotation: { wrapper.y < 20 ? 0 : 180; }
 				visible: { index == page.currentItem ? true : false; }
-				source: "../images/arrow.png"
+				source: "input-caps-on";
 			}
 			function setColor() {
 				if (itemColor == "red") {
