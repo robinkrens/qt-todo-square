@@ -80,7 +80,6 @@ Item {
 			
 			property int currentItem: -1;
 			property alias introText: showCurrent.text;
-			//color: "#00000000"
 			color: theme.backgroundColor;
 
 			/* Trashbin */
@@ -91,10 +90,6 @@ Item {
 				anchors.left: page.right;
 				anchors.leftMargin: -20;
 	
-			//	Image {
-			//		anchors.fill: parent;
-			//		source: "../images/trash.png";
-			//	}
 				PlasmaCore.IconItem {
 					source: "user-trash-full-symbolic";
 				}
@@ -146,21 +141,15 @@ Item {
 		Rectangle {
 			height: 30;
 			width: root.width;
-			//color: "#00000000";
 			color: theme.backgroundColor;
 
 			Text {
 				id: showCurrent;
 				anchors.verticalCenter: parent.verticalCenter;
-				//color: "white";
 				color: theme.textColor;
 				text: "left-click: view | right-click: add";
 				verticalAlignment: Text.AlignBottom;
 			}
-			//ModelContextMenu {
-                    	//	id: copyMenu
-                    	//	onClicked: copyToClipboard(todoList.todo)
-                	//}
 		}
 
 	}
@@ -208,8 +197,6 @@ Item {
 			radius: 5;
 			x: xpos; y: ypos;
 			
-			//color: { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3); }
-			//color: { if (itemColor == "blue") { Qt.rgba((y / page.height), 0, 0, (x / root.width) + 0.3);} }
 			color: setColor();
 
 			MouseArea {
@@ -242,19 +229,12 @@ Item {
 			}
 
 			/* If item is selected, show an arrow */
-		//		Image {
-		//			x: 2;
-		//			y: -12;
-		//			visible: { index == page.currentItem ? true : false; }
-		//			source: "../images/arrow.png"
-		//		}
-
 			PlasmaCore.IconItem {
 				x: -5;
 				y: { wrapper.y < 20 ? 10 : -20; }
 				rotation: { wrapper.y < 20 ? 0 : 180; }
 				visible: { index == page.currentItem ? true : false; }
-				source: "input-caps-on";
+				source: "input-caps-on"; /* looks like an arrow :D */
 			}
 			function setColor() {
 				if (itemColor == "red") {
