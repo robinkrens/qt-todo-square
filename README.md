@@ -25,18 +25,25 @@ Here are some images. As you can see, you can place 'dots' aka todo's anywhere
 on the screen. Drag items to the tiny garbage bin to delete. 
 
 ![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare1.png "screenshot")
+
 So this task is not very critical or difficult; that why it is in the upper corner
 and the color is a bit fading
 
 ![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare4.png "screenshot")
+
 This is a mediocre important todo
 
 ![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare5.png "screenshot")
-Oh no, this todo is important. Luckily not to hard to finish ;)
+
+Oh no, this todo is important. Luckily it is not too hard to finish ;)
 
 Here some images of other KDE standard themes 'air' and 'oxygen'
+
 ![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare2.png "screenshot")
 
-![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare6.png "screenshot")
+![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare3.png "screenshot")
+
 You can right-click below to copy all todo's to clipboard or to change some basic
 settings
+
+![Screenshot](https://robinkrens.nl/plasmoids/plasmoid-todosquare6.png "screenshot")
