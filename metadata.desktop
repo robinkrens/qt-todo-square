@@ -11,7 +11,7 @@ X-Plasma-MainScript=ui/todosquare.qml
 
 X-KDE-PluginInfo-Author=Robin Krens
 X-KDE-PluginInfo-Email=robin@robinkrens.nl
-X-KDE-PluginInfo-Name=org.kde.plasma.todosquare
+X-KDE-PluginInfo-Name=nl.robinkrens.plasma.todosquare
 X-KDE-PluginInfo-Version=0.1
 X-KDE-PluginInfo-Website=http://plasma.kde.org/
 X-KDE-PluginInfo-Category=Utilities

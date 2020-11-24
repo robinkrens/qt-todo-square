@@ -147,7 +147,7 @@ Item {
 				id: showCurrent;
 				anchors.verticalCenter: parent.verticalCenter;
 				color: theme.textColor;
-				text: "left-click: view | right-click: add";
+				text: i18n("left-click: view | right-click: add");
 				verticalAlignment: Text.AlignBottom;
 			}
 		}
@@ -211,7 +211,7 @@ Item {
 				onReleased: {
 					if (wrapper.x > (customWidth - 35) && wrapper.y < 30) {
 						page.currentItem = -1;
-						showCurrent.text = "left-click: view | right-click: add";
+						showCurrent.text = i18n("left-click: view | right-click: add");
 						Db.deleteTodo(id);
 						todoList.update();
 					} else {
